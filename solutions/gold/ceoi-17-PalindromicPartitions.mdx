@@ -65,4 +65,60 @@ int main() {
 }
 ```
 </CPPSection>
+
+<JavaSection>
+
+```java
+import java.math.BigInteger;
+import java.util.Scanner;
+
+public class PalindromicPartition {
+    static final long P = 69421;
+    static final long M = 1000000009;
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int tc = sc.nextInt();
+        while (tc-- > 0) {
+            String s = sc.next();
+            int n = s.length();
+            int ans = 0;
+            int found = 0; // -1 if no further strings can be found on both sides
+            int start = 0; // index we start searching from
+
+            while (found != -1) {
+                long hashLeft = 0, hashRight = 0;
+                found = -1;
+                long pw = 1;
+                
+                for (int l = start; l < n / 2; l++) {
+                    hashLeft = (hashLeft * P + s.charAt(l)) % M;
+                    hashRight = (hashRight + pw * s.charAt(n - 1 - l)) % M;
+                    pw = (pw * P) % M;
+                    
+                    if (hashLeft == hashRight) {
+                        found = l;
+                        break;
+                    }
+                }
+
+                // If a palindrome substring is found, update the start position
+                if (found != -1) {
+                    start = found + 1;
+                    ans += 2;
+                }
+            }
+
+            // If all characters are taken
+            if (start * 2 == n) {
+                System.out.println(ans);
+            } else {
+                System.out.println(ans + 1);
+            }
+        }
+        sc.close();
+    }
+}
+```
+</JavaSection>
 </LanguageSection>
